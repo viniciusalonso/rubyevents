@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_10_28_150340) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_12_220623) do
   create_table "ahoy_events", force: :cascade do |t|
     t.string "name"
     t.text "properties"
@@ -180,6 +180,12 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_28_150340) do
     t.index ["request_hash"], name: "index_llm_requests_on_request_hash", unique: true
     t.index ["resource_type", "resource_id"], name: "index_llm_requests_on_resource"
     t.index ["task_name"], name: "index_llm_requests_on_task_name"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.datetime "updated_at", null: false
   end
 
   create_table "organisations", force: :cascade do |t|
