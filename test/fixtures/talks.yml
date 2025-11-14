@@ -107,3 +107,11 @@ non_english_talk_one:
   video_provider: mp4
   external_player: true
   date: "2025-05-20"
+
+scheduled_talk:
+  title: talk title 3
+  description: talk descritpion 3
+  slug: talk-title-3
+  kind: "talk"
+  date: "2025-01-31"
+  video_provider: scheduled
