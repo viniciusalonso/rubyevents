@@ -25,10 +25,38 @@ class WatchListTalk < ApplicationRecord
   belongs_to :watch_list, counter_cache: :talks_count
   belongs_to :talk
   has_one :user, through: :watch_list, touch: true
+  after_create :create_user_notification_subscription, if: -> { talk.scheduled? }
+  after_destroy :destroy_user_notification_subscription, if: -> { talk.scheduled? }
 
   validates :watch_list_id, uniqueness: {scope: :talk_id}
 
   def reset_watch_list_counter_cache
     WatchList.reset_counters(watch_list_id, :talks)
+  end
+
+  private
+
+  def create_user_notification_subscription
+    notification = Notification.find_by(name: :talk_published)
+    return unless notification
+
+    NotificationUserSubscription.find_or_create_by(
+      user: user,
+      notification: notification,
+      object_id: talk.id,
+      object_class: talk.class.name
+    )
+  end
+
+  def destroy_user_notification_subscription
+    notification = Notification.find_by(name: :talk_published)
+    return unless notification
+
+    NotificationUserSubscription.find_by(
+      user: user,
+      notification: notification,
+      object_id: talk.id,
+      object_class: talk.class.name
+    ).destroy
   end
 end
