@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_14_013753) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_16_205555) do
   create_table "ahoy_events", force: :cascade do |t|
     t.string "name"
     t.text "properties"
@@ -191,6 +191,18 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_14_013753) do
     t.integer "user_id", null: false
     t.index ["notification_id"], name: "index_notification_user_subscriptions_on_notification_id"
     t.index ["user_id"], name: "index_notification_user_subscriptions_on_user_id"
+  end
+
+  create_table "notification_users", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "notification_id", null: false
+    t.string "object_class", null: false
+    t.integer "object_id", null: false
+    t.boolean "read", default: false, null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["notification_id"], name: "index_notification_users_on_notification_id"
+    t.index ["user_id"], name: "index_notification_users_on_user_id"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -473,6 +485,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_14_013753) do
   add_foreign_key "events", "organisations"
   add_foreign_key "notification_user_subscriptions", "notifications"
   add_foreign_key "notification_user_subscriptions", "users"
+  add_foreign_key "notification_users", "notifications"
+  add_foreign_key "notification_users", "users"
   add_foreign_key "password_reset_tokens", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "speakers", "speakers", column: "canonical_id"
