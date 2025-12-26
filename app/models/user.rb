@@ -91,6 +91,8 @@ class User < ApplicationRecord
   has_many :event_involvements, as: :involvementable, dependent: :destroy
   has_many :involved_events, through: :event_involvements, source: :event
 
+  has_many :notification_users, dependent: :destroy
+
   belongs_to :canonical, class_name: "User", optional: true
   has_one :contributor, dependent: :nullify
 
